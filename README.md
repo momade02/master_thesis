@@ -1,2 +1,2 @@
-# master_thesis
-Coverage Reliability of Conformal Prediction for Mortgage Delinquency Forecasting
+# Master Thesis
+Title: Coverage Reliability of Conformal Prediction for Mortgage Delinquency Forecasting
