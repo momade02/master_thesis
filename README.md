@@ -3,13 +3,6 @@
 **Reliability of Conformal Uncertainty Quantification for Mortgage Delinquency Screening**
 
 M.Sc. Data Science in Business and Economics · Eberhard Karls Universität Tübingen
-Author: Moritz Maidl · Examiner: Prof. Dr. Martin Biewen · Submitted 25 August 2026
-
-![Python](https://img.shields.io/badge/python-3.12.13-blue)
-![LightGBM](https://img.shields.io/badge/model-LightGBM-success)
-![DuckDB](https://img.shields.io/badge/data-DuckDB%20%2B%20Polars-yellow)
-![Rows](https://img.shields.io/badge/panel-2.32B%20loan--months-lightgrey)
-![Status](https://img.shields.io/badge/status-submitted-brightgreen)
 
 📄 **[Full thesis (85 pp., PDF)](Master_Thesis_FINAL.pdf)**
 
@@ -253,27 +246,3 @@ Stated plainly, because the thesis states them:
   shift, not proven causes; four windows cannot estimate a relationship.
 - Findings describe one GSE's conforming, fixed-rate book. They show how conformal
   reliability fails under stress, not how it behaves where it holds.
-
----
-
-## Citation
-
-```bibtex
-@mastersthesis{maidl2026marginal,
-  author  = {Maidl, Moritz},
-  title   = {Marginal Validity Is Not Enough: Reliability of Conformal
-             Uncertainty Quantification for Mortgage Delinquency Screening},
-  school  = {Eberhard Karls Universit\"at T\"ubingen},
-  type    = {Master's thesis},
-  year    = {2026},
-  month   = {8}
-}
-```
-
----
-
-## License
-
-Code released under the MIT License. The thesis text and figures are © 2026 Moritz Maidl.
-The Freddie Mac Single-Family Loan-Level Dataset is subject to Freddie Mac's terms of use and
-is **not** included in this repository.
