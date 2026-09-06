@@ -5,7 +5,7 @@
 M.Sc. Data Science in Business and Economics · Eberhard Karls Universität Tübingen
 Author: Moritz Maidl · Examiner: Prof. Dr. Martin Biewen · Submitted 25 August 2026
 
-![Python](https://img.shields.io/badge/python-3.10-blue)
+![Python](https://img.shields.io/badge/python-3.12.13-blue)
 ![LightGBM](https://img.shields.io/badge/model-LightGBM-success)
 ![DuckDB](https://img.shields.io/badge/data-DuckDB%20%2B%20Polars-yellow)
 ![Rows](https://img.shields.io/badge/panel-2.32B%20loan--months-lightgrey)
