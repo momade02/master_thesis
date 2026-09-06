@@ -8,6 +8,28 @@ M.Sc. Data Science in Business and Economics · Eberhard Karls Universität Tüb
 
 ---
 
+## What this project is
+
+An end-to-end empirical audit of conformal prediction (CP) as an uncertainty-quantification
+layer for a credit-risk screening system, run on the full **Freddie Mac Single-Family
+Loan-Level Dataset** (Release 46, Standard): **2,322,200,609 loan-months** from
+**46,648,508 loans**, 1999–2023.
+
+The setting is deliberately hostile to CP's assumptions: severe class imbalance
+(1.04–2.53 % positive rate), repeated within-loan observations, 12-month overlapping labels,
+cross-sectional macro dependence, and four distinct economic regimes. Exchangeability is
+violated on four axes at once, on purpose.
+
+**Four research questions:** 
+1. (RQ1) through which mechanisms does marginal validity mislead,
+and do the failures decompose into distinct kinds? 
+2. (RQ2) which CP variant repairs which
+failure? 
+3. (RQ3) does standard drift monitoring detect any of it? 
+4. (RQ4) does the CP layer
+change the loans a screen selects?
+---
+
 ## The finding in one line
 
 Split conformal prediction hit its **90.30 %** marginal coverage target on the calibration
@@ -25,25 +47,6 @@ drawn from, before any distribution shift.
 Read the columns against each other. The headline rate *improves* across regimes while the
 minority class stays at zero, and the drift monitor a bank would actually run (PSI) ranks the
 **least** reliable window as the **most** stable. That inversion is the thesis.
-
----
-
-## What this project is
-
-An end-to-end empirical audit of conformal prediction (CP) as an uncertainty-quantification
-layer for a credit-risk screening system, run on the full **Freddie Mac Single-Family
-Loan-Level Dataset** (Release 46, Standard): **2,322,200,609 loan-months** from
-**46,648,508 loans**, 1999–2023.
-
-The setting is deliberately hostile to CP's assumptions: severe class imbalance
-(1.04–2.53 % positive rate), repeated within-loan observations, 12-month overlapping labels,
-cross-sectional macro dependence, and four distinct economic regimes. Exchangeability is
-violated on four axes at once, on purpose.
-
-**Four research questions:** (RQ1) through which mechanisms does marginal validity mislead,
-and do the failures decompose into distinct kinds? (RQ2) which CP variant repairs which
-failure? (RQ3) does standard drift monitoring detect any of it? (RQ4) does the CP layer
-change the loans a screen selects?
 
 ---
 
