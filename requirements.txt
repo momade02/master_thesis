@@ -1,0 +1,120 @@
+# =============================================================================
+# master_thesis - Python dependencies
+#
+# Runtime of record: Google Colab, Python 3.12.13, 40 threads, 160 GB RAM.
+#   (Ignore `language_info.version: 3.10.0` in the .ipynb metadata - that is a
+#   stale Colab kernelspec artefact. NB02, NB03 and NB10 all print 3.12.13 at
+#   runtime, which is the version that actually executed.)
+#
+# Pinned versions below are the ones RECORDED IN NOTEBOOK OUTPUT, not guesses.
+# Packages marked UNRECORDED were installed from Colab's preinstalled image and
+# never had their version printed; the floors given are compatibility bounds,
+# not observations. See "Completing the pins" at the bottom.
+#
+# `google-colab` is deliberately absent: it is the host environment, not a
+# dependency. The `from google.colab import drive` calls and `/content` paths in
+# every notebook must be replaced for a non-Colab run.
+# =============================================================================
+
+
+# ---------------------------------------------------------------------------
+# Data engineering - ingestion, panel construction, columnar I/O
+# ---------------------------------------------------------------------------
+duckdb==1.5.4                 # NB01, NB02, NB03. Printed: "DuckDB 1.5.4 | 40 threads | 160GB"
+polars==1.43.2                # NB04-NB10. See VERSION DRIFT note below.
+pyarrow                       # UNRECORDED. Parquet engine behind pandas/polars I/O;
+                              #   installed in NB01-NB10, never imported directly.
+pandas==2.2.2                 # NB01, NB03, NB04, NB05a, NB07-NB10
+numpy==2.0.2                  # NB05b, NB08, NB09, NB10
+
+
+# ---------------------------------------------------------------------------
+# Modelling - base scorer, calibration, conformal layer, benchmark
+# ---------------------------------------------------------------------------
+lightgbm==4.6.0               # PIN DELIBERATELY TO 4.6.0 - see FROZEN ARTEFACT note below.
+scikit-learn>=1.5             # UNRECORDED, and the most consequential gap. See ISOTONIC note.
+scipy>=1.13                   # UNRECORDED. Used for chi2 (NB05a) and stats (NB06, NB07, NB10).
+                              #   Floor is the NumPy 2.x compatibility bound.
+optuna==4.9.0                 # NB04. TPE hyperparameter search, 80 trials.
+optuna-integration[lightgbm]  # UNRECORDED. NB04, LightGBMPruningCallback.
+                              #   Normally tracks the optuna minor version.
+shap==0.52.0                  # NB04. TreeSHAP feature attribution.
+joblib                        # UNRECORDED. NB05a only - persists the isotonic calibrator.
+psutil                        # UNRECORDED. NB05a only - psutil.cpu_count() for thread count.
+
+
+# ---------------------------------------------------------------------------
+# Visualisation
+# ---------------------------------------------------------------------------
+matplotlib==3.10.0            # NB02, NB04-NB09
+seaborn                       # UNRECORDED. Imported only in NB02.
+                              #   (NB06 installs it but never imports it - harmless.)
+
+
+# ---------------------------------------------------------------------------
+# Notebook runtime
+# ---------------------------------------------------------------------------
+ipython                       # UNRECORDED. IPython.display.display in NB04, NB05a, NB07.
+tqdm                          # UNRECORDED. Progress bars in NB01, NB03.
+
+
+# =============================================================================
+# VERSION DRIFT ACROSS THE PIPELINE
+#
+# The notebooks were not all executed in one session, and two packages moved
+# mid-pipeline. Recorded values:
+#
+#   lightgbm   4.6.0  in NB04 (training), NB05a (scoring)
+#              4.7.0  in NB08 (local reliability audit)
+#   polars     1.41.2 in NB04
+#              1.43.2 in NB05b, NB08, NB09
+#
+# This file therefore RECONSTRUCTS a single consistent environment rather than
+# recording one that existed. Anyone re-running from these pins gets a coherent
+# environment, not a byte-identical replay of the original sessions.
+#
+# FROZEN ARTEFACT: lightgbm is pinned to 4.6.0, the lower of the two, on
+# purpose. The frozen booster is both TRAINED (NB04) and used for inference
+# (NB05a, `lgb.Booster(model_file=...)`) under 4.6.0, so 4.6.0 is the version
+# that guarantees the stored model loads and predicts identically. NB08's 4.7.0
+# is used only to fit a throwaway diagnostic model of the miscoverage
+# indicator - it never touches the frozen booster - so pinning down to 4.6.0
+# costs nothing.
+#
+#
+# ISOTONIC / scikit-learn: WHY THE UNRECORDED PIN MATTERS MOST HERE
+#
+# sklearn.isotonic.IsotonicRegression produces the PAVA calibration map that
+# every downstream result depends on: it is what compresses the upper score
+# range toward the ~1% base rate and sets how far above the threshold the
+# minority class sits. A different PAVA implementation is a different thesis.
+#
+# There is a cheap fingerprint for verifying the environment is right. The
+# recorded run produced:
+#
+#   PAVA breakpoints (LightGBM pipeline)  : 516
+#   q_hat_SCP                             : 0.01622366
+#   q_hat_APS                             : 0.89995086
+#   Mondrian FICO x LTV threshold spread   : 128.71x
+#   OOS Brier, pre -> post isotonic        : 0.064263 -> 0.008616
+#
+# If a re-run reproduces 516 breakpoints and q_hat_SCP = 0.01622366, the
+# calibration path is faithful regardless of which sklearn version is installed.
+# If it does not, the environment differs in a way that matters and nothing
+# downstream should be compared to the reported figures.
+#
+#
+# COMPLETING THE PINS
+#
+# Every UNRECORDED entry can be resolved by running this in the original Colab
+# environment (if still live) and pasting the output back in:
+#
+#   import importlib.metadata as md
+#   for p in ["pyarrow","scikit-learn","scipy","optuna-integration",
+#             "joblib","psutil","seaborn","ipython","tqdm"]:
+#       try:    print(f"{p}=={md.version(p)}")
+#       except Exception: print(f"# {p}: not installed")
+#
+# Do not fill these in from memory. An unpinned line is honest; a wrong pin is
+# worse than none, because it silently claims a fidelity the repo cannot back.
+# =============================================================================
