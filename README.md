@@ -8,7 +8,7 @@ M.Sc. Data Science in Business and Economics · Eberhard Karls Universität Tüb
 
 ---
 
-## What this project is
+## Purpose of the project/thesis
 
 An end-to-end empirical audit of conformal prediction (CP) as an uncertainty-quantification
 layer for a credit-risk screening system, run on the full **Freddie Mac Single-Family
@@ -30,10 +30,10 @@ failure?
 change the loans a screen selects?
 ---
 
-## The finding in one line
+## Concise findings
 
 Split conformal prediction hit its **90.30 %** marginal coverage target on the calibration
-data and covered the delinquent class at **0.0039 %** — on the very rows the threshold was
+data and covered the delinquent class at **0.0039 %**. On the very rows the threshold was
 drawn from, before any distribution shift.
 
 | Split conformal, α = 0.10 | Marginal | Coverage (y = 1) | Worst FICO×LTV cell | PSI |
@@ -46,7 +46,7 @@ drawn from, before any distribution shift.
 
 Read the columns against each other. The headline rate *improves* across regimes while the
 minority class stays at zero, and the drift monitor a bank would actually run (PSI) ranks the
-**least** reliable window as the **most** stable. That inversion is the thesis.
+**least** reliable window as the **most** stable. That inversion is one of the main points in the thesis.
 
 ---
 
@@ -186,8 +186,7 @@ sensitivity re-run.
 
 ## Reproducibility
 
-**This repository is a documented record, not a runnable package.** That is a deliberate
-statement of scope, and the constraints are worth being explicit about:
+**This repository is a documented record, not a runnable package:** 
 
 - **Data is not redistributable.** The Freddie Mac SFLLD requires a signed user agreement.
   Obtain Release 46 (Standard) directly from Freddie Mac; NB01 reconciles ingested counts to
@@ -197,7 +196,7 @@ statement of scope, and the constraints are worth being explicit about:
   77 minutes, the Optuna search 47 minutes.
 - **Environment.** Written for Google Colab with Google Drive as durable storage and local
   NVMe as scratch — paths and `google.colab` imports are hard-coded and would need replacing
-  for a local run. Python 3.10.
+  for a local run. Python 3.12.13.
 - **Outputs are committed on purpose.** Since the pipeline cannot be cheaply re-executed,
   every notebook is stored with its executed cells, so the reported numbers are inspectable
   without re-running anything.
@@ -233,19 +232,3 @@ Core stack: `duckdb` · `polars` · `pandas` · `numpy` · `lightgbm` · `optuna
 README_notebooks.ipynb           notebook-level documentation
 Master_Thesis_FINAL.pdf          full thesis (85 pp.)
 ```
-
----
-
-## Scope and limits
-
-Stated plainly, because the thesis states them:
-
-- This is **not** an argument that CP is invalid. The guarantee holds wherever exchangeability
-  does; what is studied is how its outputs behave where that condition is deliberately broken.
-- **No new conformal method is proposed.** Existing ones are evaluated and characterised.
-- Label-conditional (per-class Mondrian) CP is *not* run — a scope choice, flagged as the
-  most direct untested repair.
-- The four regime labels are *a priori* design hypotheses naming the dominant observable
-  shift, not proven causes; four windows cannot estimate a relationship.
-- Findings describe one GSE's conforming, fixed-rate book. They show how conformal
-  reliability fails under stress, not how it behaves where it holds.
